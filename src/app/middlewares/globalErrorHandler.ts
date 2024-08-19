@@ -37,7 +37,7 @@ function globalErrorHandler(
     message,
     errorSources,
     checkErrorPattern: error,
-    stack: config.NODE_ENV === "development" ? error.stack : null,
+    stack: config.node_env === "development" ? error.stack : null,
   });
 }
 
