@@ -2,6 +2,7 @@
 import { v2 as cloudinary } from 'cloudinary';
 import config from '../config';
 import multer from 'multer';
+import fs from "fs";
 
 // Configuration
 cloudinary.config({
@@ -27,6 +28,18 @@ export const saveImageToCloudinary = async (imgName: string, path: string) => {
         .catch((error) => {
             console.log(error);
         });
+
+
+    // removing the image after from the upload folder after save to cloudinary
+    fs.unlink(path, (error) => {
+        if (error) {
+            console.log(error, "fs unlink");
+        } else {
+            console.log("file removed successfully", "fs unlink");
+        }
+    });
+
+
     return uploadImage;
 };
 
