@@ -25,7 +25,7 @@ export const ProductSchema = new mongoose.Schema(
         },
         imageUrl: {
             type: String,
-            required: true
+            default: " "
         },
         category: {
             type: String,

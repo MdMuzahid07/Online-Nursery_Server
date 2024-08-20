@@ -1,87 +1,91 @@
+/* eslint-disable no-console */
 import httpStatus from "http-status";
 import { ProductService } from "./product.service";
-import { NextFunction, Request, Response } from "express";
+import { Request, RequestHandler, Response } from "express";
 
 
-const getAllProducts = async (req: Request, res: Response, next: NextFunction) => {
+
+
+const addProduct: RequestHandler = async (req: Request, res: Response) => {
     try {
-        const result = await ProductService.getProductsFromDB();
 
-        res.status(httpStatus.OK).json({
-            success: true,
-            statusCode: httpStatus.OK,
-            message: "products retrieved successfully",
-            data: result
-        });
-    } catch (error) {
-        next(error);
-    }
-};
+        const result = await ProductService.addProductIntoDB(req.file, req.body);
 
-
-const getASingleProduct = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const { id } = req.params;
-        const result = await ProductService.getAProductFromDB(id);
-
-        res.status(httpStatus.OK).json({
-            success: true,
-            statusCode: httpStatus.OK,
-            message: "products retrieved successfully by id",
-            data: result
-        });
-    } catch (error) {
-        next(error);
-    }
-};
-
-
-const addProduct = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const payload = req.body;
-        const result = await ProductService.getAProductFromDB(payload);
-
-        res.status(httpStatus.OK).json({
+        res.status(400).json({
             success: true,
             statusCode: httpStatus.OK,
             message: "product created successfully",
             data: result
         });
     } catch (error) {
-        next(error);
+        console.log(error);
     }
 };
 
-const updateAProduct = async (req: Request, res: Response, next: NextFunction) => {
+
+const getAllProducts: RequestHandler = async (req: Request, res: Response) => {
+    try {
+        const result = await ProductService.getProductsFromDB();
+
+        res.status(400).json({
+            success: true,
+            statusCode: httpStatus.OK,
+            message: "products retrieved successfully",
+            data: result
+        });
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+
+const getASingleProduct: RequestHandler = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const result = await ProductService.getAProductFromDB(id);
+
+        res.status(400).json({
+            success: true,
+            statusCode: httpStatus.OK,
+            message: "products retrieved successfully by id",
+            data: result
+        });
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+
+const updateAProduct: RequestHandler = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
         const payload = req.body;
         const result = await ProductService.updateAProductFromDB(id, payload);
 
-        res.status(httpStatus.OK).json({
+        res.status(400).json({
             success: true,
             statusCode: httpStatus.OK,
             message: "product updated successfully",
             data: result
         });
     } catch (error) {
-        next(error);
+        console.log(error);
     }
 };
 
-const deleteAProduct = async (req: Request, res: Response, next: NextFunction) => {
+const deleteAProduct: RequestHandler = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
         const result = await ProductService.deleteAProductFromDB(id);
 
-        res.status(httpStatus.OK).json({
+        res.status(400).json({
             success: true,
             statusCode: httpStatus.OK,
             message: "product deleted successfully",
             data: result
         });
     } catch (error) {
-        next(error);
+        console.log(error);
     }
 };
 

@@ -1,5 +1,27 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { saveImageToCloudinary } from "../../utils/saveImageToCloudinary";
 import { TProduct } from "./product.interface";
 import ProductModel from "./product.model";
+
+
+const addProductIntoDB = async (file: any, payload: TProduct) => {
+
+
+    // create an product object
+    const product: Partial<TProduct> = { ...payload };
+
+    if (file && payload) {
+        const imgName = `${product.title}${product.category}`;
+        const path = file?.path;
+        const productImgUrl = await saveImageToCloudinary(imgName, path);
+
+        // adding the image url link into the product object;
+        product.imageUrl = productImgUrl?.secure_url;
+    }
+
+    const result = await ProductModel.create(product);
+    return result;
+};
 
 const getProductsFromDB = async () => {
     const result = await ProductModel.find();
@@ -8,11 +30,6 @@ const getProductsFromDB = async () => {
 
 const getAProductFromDB = async (id: string) => {
     const result = await ProductModel.findById(id);
-    return result;
-};
-
-const addProductIntoDB = async (payload: TProduct) => {
-    const result = await ProductModel.create(payload);
     return result;
 };
 
