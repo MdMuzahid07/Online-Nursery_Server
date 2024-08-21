@@ -3,31 +3,23 @@ import httpStatus from "http-status";
 import { ProductService } from "./product.service";
 import { Request, RequestHandler, Response } from "express";
 import sendResponse from "../../utils/sendResponse";
+import tryCatchAsync from "../../utils/tryCatchAsync";
 
 
 
+// tryCatchAsync , is an HOC, its take this function an return if resolved the promise, or send error to the global error handler
+const addProduct: RequestHandler = tryCatchAsync(async (req: Request, res: Response) => {
+    const result = await ProductService.addProductIntoDB(req.file, req.body);
 
-const addProduct: RequestHandler = async (req: Request, res: Response) => {
-    try {
+    // sendResponse is a util function
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "product created successfully",
+        data: result
+    });
+});
 
-        const result = await ProductService.addProductIntoDB(req.file, req.body);
-
-        // sendResponse is a util function
-        sendResponse(res, {
-            statusCode: httpStatus.OK,
-            success: true,
-            message: "product created successfully",
-            data: result
-        });
-    } catch (error) {
-        sendResponse(res, {
-            statusCode: httpStatus.NOT_FOUND,
-            success: true,
-            message: "product not created",
-            error: error?.message
-        });
-    }
-};
 
 const getAllProducts: RequestHandler = async (req: Request, res: Response) => {
     try {
