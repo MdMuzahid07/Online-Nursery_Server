@@ -32,8 +32,26 @@ const addProductIntoDB = async (file: any, payload: TProduct) => {
     return result;
 };
 
-const getProductsFromDB = async () => {
-    const result = await ProductModel.find();
+const getProductsFromDB = async (query: Record<string, unknown>) => {
+
+    console.log(query)
+    let searchTerm = " ";
+    if (query?.searchTerm) {
+        searchTerm = query?.searchTerm as string;
+    };
+
+    const searchQuery = ProductModel.find({
+        // search will operate in title, or category, 
+        // and to make it partial searchable, using $regex here
+        // and for DRY code , using map() here, instead of two time of $regex operation
+        $or: ["title", "category"].map((field) => (
+            // { "title": { $reges: searchTerm, $options: "i" } }
+            { [field]: { $regex: searchTerm, $options: "i" } }
+        ))
+    });
+
+    const result = await searchQuery.find(query);
+
     return result;
 };
 

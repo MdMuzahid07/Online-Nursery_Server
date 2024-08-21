@@ -23,7 +23,8 @@ const addProduct: RequestHandler = tryCatchAsync(async (req: Request, res: Respo
 
 
 const getAllProducts: RequestHandler = tryCatchAsync(async (req: Request, res: Response) => {
-    const result = await ProductService.getProductsFromDB();
+    const query = req.query;
+    const result = await ProductService.getProductsFromDB(query);
 
     sendResponse(res, {
         statusCode: httpStatus.OK,
