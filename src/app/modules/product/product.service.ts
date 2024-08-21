@@ -42,13 +42,16 @@ const getAProductFromDB = async (id: string) => {
     return result;
 };
 
-const updateAProductFromDB = async (id: string, payload: TProduct) => {
-    const result = await ProductModel.findOneAndUpdate({ id }, { payload });
+const updateAProductFromDB = async (id: string, payload: Partial<TProduct>) => {
+    const result = await ProductModel.findOneAndUpdate({ _id: id }, payload, {
+        new: true,
+        runValidation: true
+    });
     return result;
 };
 
 const deleteAProductFromDB = async (id: string) => {
-    const result = await ProductModel.findOneAndDelete({ id });
+    const result = await ProductModel.findOneAndDelete({ _id: id });
     return result;
 };
 

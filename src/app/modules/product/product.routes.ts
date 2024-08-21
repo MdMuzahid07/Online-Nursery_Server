@@ -2,7 +2,7 @@ import express, { NextFunction, Request, Response } from "express";
 import { ProductController } from "./product.controller";
 import { upload } from "../../utils/saveImageToCloudinary";
 import requestValidator from "../../middlewares/requestValidator";
-import { productValidationSchema } from "./product.validation";
+import { productValidation } from "./product.validation";
 
 
 const router = express.Router();
@@ -15,7 +15,7 @@ router.post(
         req.body = JSON.parse(req.body.data);
         next();
     },
-    requestValidator(productValidationSchema),
+    requestValidator(productValidation.productValidationSchema),
     ProductController.addProduct
 );
 
@@ -31,6 +31,7 @@ router.get(
 
 router.patch(
     "/:productId",
+    requestValidator(productValidation.updateProductValidationSchema),
     ProductController.updateAProduct
 );
 
