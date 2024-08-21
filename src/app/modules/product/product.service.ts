@@ -38,7 +38,7 @@ const getProductsFromDB = async () => {
 };
 
 const getAProductFromDB = async (id: string) => {
-    const result = await ProductModel.findById(id);
+    const result = await ProductModel.findById({ _id: id });
     return result;
 };
 
