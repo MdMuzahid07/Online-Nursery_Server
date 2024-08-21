@@ -6,9 +6,18 @@ import ProductModel from "./product.model";
 
 const addProductIntoDB = async (file: any, payload: TProduct) => {
 
-
     // create an product object
     const product: Partial<TProduct> = { ...payload };
+
+    // get all products available in DB
+    const products = await ProductModel.find();
+
+    // checking is exists
+    const isExists = products?.find((product) => product.title === payload?.title && product?.category === payload?.category);
+
+    if (isExists) {
+        throw new Error("this product already added");
+    }
 
     if (file && payload) {
         const imgName = `${product.title}${product.category}`;

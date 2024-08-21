@@ -2,6 +2,7 @@
 import httpStatus from "http-status";
 import { ProductService } from "./product.service";
 import { Request, RequestHandler, Response } from "express";
+import sendResponse from "../../utils/sendResponse";
 
 
 
@@ -11,30 +12,40 @@ const addProduct: RequestHandler = async (req: Request, res: Response) => {
 
         const result = await ProductService.addProductIntoDB(req.file, req.body);
 
-        res.status(400).json({
-            success: true,
+        // sendResponse is a util function
+        sendResponse(res, {
             statusCode: httpStatus.OK,
+            success: true,
             message: "product created successfully",
             data: result
         });
     } catch (error) {
-        console.log(error);
+        sendResponse(res, {
+            statusCode: httpStatus.NOT_FOUND,
+            success: true,
+            message: "product not created",
+            error: error?.message
+        });
     }
 };
-
 
 const getAllProducts: RequestHandler = async (req: Request, res: Response) => {
     try {
         const result = await ProductService.getProductsFromDB();
 
-        res.status(400).json({
-            success: true,
+        sendResponse(res, {
             statusCode: httpStatus.OK,
-            message: "products retrieved successfully",
+            success: true,
+            message: "product retrieved successfully",
             data: result
         });
     } catch (error) {
-        console.log(error);
+        sendResponse(res, {
+            statusCode: httpStatus.NOT_FOUND,
+            success: true,
+            message: "product not found",
+            error: error?.message
+        });
     }
 };
 
@@ -44,14 +55,19 @@ const getASingleProduct: RequestHandler = async (req: Request, res: Response) =>
         const { id } = req.params;
         const result = await ProductService.getAProductFromDB(id);
 
-        res.status(400).json({
-            success: true,
+        sendResponse(res, {
             statusCode: httpStatus.OK,
-            message: "products retrieved successfully by id",
+            success: true,
+            message: "product retrieved successfully by id",
             data: result
         });
     } catch (error) {
-        console.log(error);
+        sendResponse(res, {
+            statusCode: httpStatus.NOT_FOUND,
+            success: true,
+            message: "product not found",
+            error: error?.message
+        });
     }
 };
 
@@ -62,14 +78,19 @@ const updateAProduct: RequestHandler = async (req: Request, res: Response) => {
         const payload = req.body;
         const result = await ProductService.updateAProductFromDB(id, payload);
 
-        res.status(400).json({
-            success: true,
+        sendResponse(res, {
             statusCode: httpStatus.OK,
-            message: "product updated successfully",
+            success: true,
+            message: "product update successfully",
             data: result
         });
     } catch (error) {
-        console.log(error);
+        sendResponse(res, {
+            statusCode: httpStatus.BAD_REQUEST,
+            success: true,
+            message: "product not updated",
+            error: error?.message
+        });
     }
 };
 
@@ -78,14 +99,19 @@ const deleteAProduct: RequestHandler = async (req: Request, res: Response) => {
         const { id } = req.params;
         const result = await ProductService.deleteAProductFromDB(id);
 
-        res.status(400).json({
-            success: true,
+        sendResponse(res, {
             statusCode: httpStatus.OK,
+            success: true,
             message: "product deleted successfully",
             data: result
         });
     } catch (error) {
-        console.log(error);
+        sendResponse(res, {
+            statusCode: httpStatus.BAD_REQUEST,
+            success: true,
+            message: "product not deleted",
+            error: error?.message
+        });
     }
 };
 
