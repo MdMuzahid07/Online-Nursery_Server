@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
+import { TProduct } from "./product.interface";
 
 
-export const ProductSchema = new mongoose.Schema(
+export const ProductSchema = new mongoose.Schema<TProduct>(
     {
         title: {
             type: String,
@@ -9,6 +10,10 @@ export const ProductSchema = new mongoose.Schema(
         },
         description: {
             type: String,
+            required: true
+        },
+        stock: {
+            type: Number,
             required: true
         },
         price: {

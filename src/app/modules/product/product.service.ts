@@ -125,11 +125,6 @@ const getProductsFromDB = async (query: Record<string, unknown>) => {
 
     //! limit, pagination ======> end here <=======
 
-    console.log({
-        query,
-        queryObj
-    });
-
     return result;
 };
 

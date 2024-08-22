@@ -7,5 +7,6 @@ export interface TProduct {
     quantity: number;
     rating: number;
     imageUrl: string;
+    stock: number;
     category?: string;
 };
