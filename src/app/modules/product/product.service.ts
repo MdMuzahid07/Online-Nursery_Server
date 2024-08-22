@@ -79,7 +79,7 @@ const getProductsFromDB = async (query: Record<string, unknown>) => {
 
     const queryObj = { ...query };
 
-    const excludeFieldsForFiltering = ["searchTerm", "sort"];
+    const excludeFieldsForFiltering = ["searchTerm", "sort", "limit"];
     excludeFieldsForFiltering.forEach((el) => delete queryObj[el]);
 
 
@@ -102,9 +102,19 @@ const getProductsFromDB = async (query: Record<string, unknown>) => {
     //! sorting ======> end here <=======
 
 
+    //! limit ======> start here <=======
+
+    let limit = 5;
+    if (query?.limit) {
+        limit = Number(query?.limit);
+    };
+
+    const result = await sortingQuery.find().limit(limit);
+
+    //! limit ======> end here <=======
 
 
-    const result = await sortingQuery.find();
+
 
 
 
