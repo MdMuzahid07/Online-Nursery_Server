@@ -79,7 +79,7 @@ const getProductsFromDB = async (query: Record<string, unknown>) => {
 
     const queryObj = { ...query };
 
-    const excludeFieldsForFiltering = ["searchTerm", "sort", "limit"];
+    const excludeFieldsForFiltering = ["searchTerm", "sort", "limit", "page"];
     excludeFieldsForFiltering.forEach((el) => delete queryObj[el]);
 
 
@@ -102,21 +102,33 @@ const getProductsFromDB = async (query: Record<string, unknown>) => {
     //! sorting ======> end here <=======
 
 
-    //! limit ======> start here <=======
+    //! limit, pagination ======> start here <=======
 
+    let page = 1;
     let limit = 5;
+    let skip = 0;
+
     if (query?.limit) {
         limit = Number(query?.limit);
     };
 
-    const result = await sortingQuery.find().limit(limit);
+    if (query?.page) {
+        page = Number(query?.page);
+        skip = (page - 1) * limit;
+    }
 
-    //! limit ======> end here <=======
+    const paginateQuery = sortingQuery.skip(skip);
 
 
+    // last phase for resolving after all method chaining
+    const result = await paginateQuery.limit(limit);
 
+    //! limit, pagination ======> end here <=======
 
-
+    console.log({
+        query,
+        queryObj
+    });
 
     return result;
 };
