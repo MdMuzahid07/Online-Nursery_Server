@@ -79,13 +79,34 @@ const getProductsFromDB = async (query: Record<string, unknown>) => {
 
     const queryObj = { ...query };
 
-    const excludeFieldsForFiltering = ["searchTerm"];
+    const excludeFieldsForFiltering = ["searchTerm", "sort"];
     excludeFieldsForFiltering.forEach((el) => delete queryObj[el]);
+
+
+    const filterQuery = searchQuery.find(queryObj);
 
     //! filtering ======> end here <=======
 
 
-    const result = await searchQuery.find(queryObj);
+
+    //! sorting ======> start here <=======
+
+    let sort = "-createdAt";
+
+    if (query?.sort) {
+        sort = query?.sort as string;
+    }
+
+    const sortingQuery = filterQuery.find().sort(sort);
+
+    //! sorting ======> end here <=======
+
+
+
+
+    const result = await sortingQuery.find();
+
+
 
     return result;
 };
