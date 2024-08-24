@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.post(
     "/create-category",
-    upload.single("file"),
+    upload.single("categoryImg"),
     // this middleware for parse the text data as json, because we validation want a json data
     (req: Request, res: Response, next: NextFunction) => {
         req.body = JSON.parse(req.body.data);

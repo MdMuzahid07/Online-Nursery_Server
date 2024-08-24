@@ -17,15 +17,19 @@ const addCategoryIntoDB = async (file: any, payload: TCategory) => {
 
     if (isExists) {
         throw new Error("this category already added");
-    }
+    };
 
     if (file && payload) {
-        const imgName = `${category.name}${category.image}`;
+        const imgName = `${category.name}${Math.random()}categoryImg`;
         const path = file?.path;
         const categoryImgUrl = await saveImageToCloudinary(imgName, path);
         // adding the image url link into the category object;
         category.image = categoryImgUrl?.secure_url;
-    }
+    };
+
+    if (category && !category.image) {
+        throw new Error("category image must be added");
+    };
 
     const result = await CategoryModel.create(category);
     return result;
