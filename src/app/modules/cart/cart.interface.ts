@@ -1,18 +1,12 @@
 
 export interface TCartItem {
-    title: string;
+    productId: string;
     quantity: number;
-    price: number;
     totalPrice: number;
-    image: string;
-    category: string;
-    description: string;
-    stock: string;
-    rating: number;
 };
 
 
-export interface TCartDetails {
+export interface TCart {
     userId: string;
     items: TCartItem[];
     subtotal: number;
@@ -20,9 +14,4 @@ export interface TCartDetails {
     shippingCost: number;
     total: number;
     currency: string;
-};
-
-
-export interface TCart {
-    cart: TCartDetails;
 };

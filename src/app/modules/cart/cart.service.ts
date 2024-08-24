@@ -4,17 +4,6 @@ import CartModel from "./cart.model";
 
 
 const createCartIntoDB = async (payload: TCart) => {
-
-    // get all Cart available in DB
-    // const cartItems = await CartModel.find();
-
-    // checking is exists
-    // const isExists = cartItems?.find((Cart) => Cart.name === payload?.name);
-
-    // if (isExists) {
-    //     throw new Error("this Cart already added");
-    // }
-
     const result = await CartModel.create(payload);
     return result;
 };

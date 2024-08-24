@@ -1,38 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import { TAddress, TCustomerDetails, TOrder, TOrderItem } from "./order.interface";
-
-
-const OrderItemSchema: Schema = new mongoose.Schema<TOrderItem>({
-    productId: {
-        type: String,
-        required: true
-    },
-    title: {
-        type: String,
-        required: true
-    },
-    quantity: {
-        type: Number,
-        required: true
-    },
-    price: {
-        type: Number,
-        required: true
-    },
-    totalPrice: {
-        type: Number,
-        required: true
-    },
-    image: {
-        type: String,
-        required: true
-    },
-    category: {
-        type: String,
-        required: true
-    },
-});
-
+import { TAddress, TCustomerDetails, TOrder } from "./order.interface";
 
 
 const CustomerAddressSchema: Schema = new mongoose.Schema<TAddress>({
@@ -78,41 +45,16 @@ const CustomerDetailsSchema: Schema = new mongoose.Schema<TCustomerDetails>({
     }
 });
 
+// orderId is the cart id
 export const OrderSchema: Schema = new mongoose.Schema<TOrder>({
     orderId: {
-        type: String,
-        required: true
-    },
-    userId: {
-        type: String,
-        required: true
+        type: Schema.Types.ObjectId,
+        required: true,
+        unique: true,
+        ref: "Cart"
     },
     customerDetails: {
         type: CustomerDetailsSchema,
-        required: true
-    },
-    items: {
-        type: [OrderItemSchema],
-        required: true
-    },
-    subtotal: {
-        type: Number,
-        required: true
-    },
-    tax: {
-        type: Number,
-        required: true
-    },
-    shippingCost: {
-        type: Number,
-        required: true
-    },
-    total: {
-        type: Number,
-        required: true
-    },
-    currency: {
-        type: String,
         required: true
     },
     paymentMethod: {

@@ -1,14 +1,5 @@
+import { Types } from "mongoose";
 import { TOrderStatus, TPaymentMethods, TPaymentStatus } from "./order.constants";
-
-export interface TOrderItem {
-    productId: string;
-    title: string;
-    quantity: number;
-    price: number;
-    totalPrice: number;
-    image: string;
-    category: string;
-};
 
 export interface TAddress {
     street: string;
@@ -27,15 +18,8 @@ export interface TCustomerDetails {
 
 
 export interface TOrder {
-    orderId: string;
-    userId: string;
+    orderId: Types.ObjectId;
     customerDetails: TCustomerDetails;
-    items: TOrderItem[];
-    subtotal: number;
-    tax: number;
-    shippingCost: number;
-    total: number;
-    currency: string;
     paymentMethod: TPaymentMethods;
     paymentStatus: TPaymentStatus;
     orderStatus: TOrderStatus;

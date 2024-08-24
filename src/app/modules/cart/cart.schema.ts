@@ -1,11 +1,8 @@
 import mongoose from "mongoose";
+import { TCart, TCartItem } from "./cart.interface";
 
-const CartItemSchema = new mongoose.Schema({
+const CartItemSchema = new mongoose.Schema<TCartItem>({
     productId: {
-        type: String,
-        required: true,
-    },
-    title: {
         type: String,
         required: true,
     },
@@ -13,41 +10,18 @@ const CartItemSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
-    price: {
-        type: Number,
-        required: true,
-    },
     totalPrice: {
         type: Number,
-        required: true,
-    },
-    image: {
-        type: String,
-        required: true,
-    },
-    category: {
-        type: String,
-        required: true,
-    },
-    description: {
-        type: String,
-        required: true,
-    },
-    stock: {
-        type: Number,
-        required: true,
-    },
-    rating: {
-        type: String,
         required: true,
     },
 });
 
 
-const CartDetailsSchema = new mongoose.Schema({
+export const CartSchema = new mongoose.Schema<TCart>({
     userId: {
         type: String,
-        required: true
+        required: true,
+        default: " "
     },
     items: {
         type: [CartItemSchema],
@@ -70,15 +44,7 @@ const CartDetailsSchema = new mongoose.Schema({
         required: true
     },
     currency: {
-        type: Number,
+        type: String,
         required: true
     },
-});
-
-
-export const CartSchema = new mongoose.Schema({
-    cart: {
-        type: CartDetailsSchema,
-        required: true
-    }
 });
