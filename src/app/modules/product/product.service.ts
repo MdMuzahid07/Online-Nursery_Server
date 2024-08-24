@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { saveImageToCloudinary } from "../../utils/saveImageToCloudinary";
+import CategoryModel from "../category/category.model";
 import { TProduct } from "./product.interface";
 import ProductModel from "./product.model";
 
@@ -54,13 +55,15 @@ const getProductsFromDB = async (query: Record<string, unknown>) => {
         searchTerm = query?.searchTerm as string;
     };
     // product searchable fields
-    const productSearchableFields = ["title", "category"];
+
+    // const productSearchableFields = ["title", "category"];
 
     const searchQuery = ProductModel.find(
         {
-            $or: productSearchableFields.map((field) => (
-                { [field]: { $regex: searchTerm, $options: "i" } }
-            ))
+            $or: [
+                { title: { $regex: searchTerm, $options: "i" } },
+                { category: await CategoryModel.find({ name: { $regex: searchTerm, $options: "i" } }) }
+            ]
         }
     );
 
@@ -121,7 +124,7 @@ const getProductsFromDB = async (query: Record<string, unknown>) => {
 
 
     // last phase for resolving after all method chaining
-    const result = await paginateQuery.limit(limit);
+    const result = await paginateQuery.limit(limit).populate("category");
 
     //! limit, pagination ======> end here <=======
 

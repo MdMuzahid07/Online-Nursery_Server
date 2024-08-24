@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import { TProduct } from "./product.interface";
 
 
@@ -33,8 +33,10 @@ export const ProductSchema = new mongoose.Schema<TProduct>(
             default: " "
         },
         category: {
-            type: String,
-            required: true
+            type: Schema.Types.ObjectId,
+            required: true,
+            unique: true,
+            ref: "category"
         }
     },
     {
