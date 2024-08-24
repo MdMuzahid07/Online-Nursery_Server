@@ -10,7 +10,7 @@ import { CategoryService } from "./category.service";
 //* tryCatchAsync , is an HOC, its take this function an return if resolved the promise, or send error to the global error handler
 
 const addCategory: RequestHandler = tryCatchAsync(async (req: Request, res: Response) => {
-    const result = await CategoryService.addCategoryIntoDB(req.body);
+    const result = await CategoryService.addCategoryIntoDB(req.file, req.body);
 
     // sendResponse is a util function
     sendResponse(res, {

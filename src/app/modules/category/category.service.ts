@@ -1,9 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { saveImageToCloudinary } from "../../utils/saveImageToCloudinary";
 import { TCategory } from "./category.interface";
 import CategoryModel from "./category.model";
 
 
-const addCategoryIntoDB = async (payload: TCategory) => {
+const addCategoryIntoDB = async (file: any, payload: TCategory) => {
+
+    // create an category object
+    const category: Partial<TCategory> = { ...payload };
 
     // get all category available in DB
     const categories = await CategoryModel.find();
@@ -15,7 +19,15 @@ const addCategoryIntoDB = async (payload: TCategory) => {
         throw new Error("this category already added");
     }
 
-    const result = await CategoryModel.create(payload);
+    if (file && payload) {
+        const imgName = `${category.name}${category.image}`;
+        const path = file?.path;
+        const categoryImgUrl = await saveImageToCloudinary(imgName, path);
+        // adding the image url link into the category object;
+        category.image = categoryImgUrl?.secure_url;
+    }
+
+    const result = await CategoryModel.create(category);
     return result;
 };
 

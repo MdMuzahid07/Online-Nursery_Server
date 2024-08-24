@@ -1,6 +1,6 @@
 import { TOrderStatus, TPaymentMethods, TPaymentStatus } from "./order.constants";
 
-interface TOrderItem {
+export interface TOrderItem {
     productId: string;
     title: string;
     quantity: number;
@@ -10,7 +10,7 @@ interface TOrderItem {
     category: string;
 };
 
-interface TAddress {
+export interface TAddress {
     street: string;
     city: string;
     state: string;
@@ -18,7 +18,7 @@ interface TAddress {
     country: string;
 };
 
-interface TCustomerDetails {
+export interface TCustomerDetails {
     name: string;
     email: string;
     phoneNumber: string;
@@ -27,18 +27,16 @@ interface TCustomerDetails {
 
 
 export interface TOrder {
-    order: {
-        orderId: string;
-        userId: string;
-        customerDetails: TCustomerDetails;
-        items: TOrderItem[];
-        subtotal: number;
-        tax: number;
-        shippingCost: number;
-        total: number;
-        currency: string;
-        paymentMethod: TPaymentMethods;
-        paymentStatus: TPaymentStatus;
-        orderStatus: TOrderStatus;
-    }
+    orderId: string;
+    userId: string;
+    customerDetails: TCustomerDetails;
+    items: TOrderItem[];
+    subtotal: number;
+    tax: number;
+    shippingCost: number;
+    total: number;
+    currency: string;
+    paymentMethod: TPaymentMethods;
+    paymentStatus: TPaymentStatus;
+    orderStatus: TOrderStatus;
 };
