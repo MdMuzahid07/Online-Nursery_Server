@@ -148,15 +148,26 @@ const getAProductFromDB = async (id: string) => {
 
 
 
-const updateAProductFromDB = async (id: string, payload: Partial<TProduct>) => {
-    const result = await ProductModel.findOneAndUpdate({ _id: id }, payload, {
+const updateAProductFromDB = async (id: string, file: any, payload: Partial<TProduct>) => {
+
+    // create a product object
+    const product: Partial<TProduct> = { ...payload };
+
+    if (file && file.path) {
+        const imgName = file.originalname;
+        const path = file.path;
+        const productImgUrl = await saveImageToCloudinary(imgName, path);
+        // add the image URL link into the product object
+        product.imageUrl = productImgUrl?.secure_url;
+    }
+
+    const result = await ProductModel.findOneAndUpdate({ _id: id }, product, {
         new: true,
-        runValidation: true
+        runValidators: true,
     });
+
     return result;
 };
-
-
 
 
 
@@ -165,9 +176,6 @@ const deleteAProductFromDB = async (id: string) => {
     const result = await ProductModel.findOneAndDelete({ _id: id });
     return result;
 };
-
-
-
 
 
 

@@ -31,6 +31,14 @@ router.get(
 
 router.patch(
     "/:productId",
+    upload.single("file"),
+    // this middleware for parse the text data as json, because we validation want a json data
+    (req: Request, res: Response, next: NextFunction) => {
+        if (req.body.data) {
+            req.body = JSON.parse(req.body.data);
+        }
+        next();
+    },
     requestValidator(productValidation.updateProductValidationSchema),
     ProductController.updateAProduct
 );
