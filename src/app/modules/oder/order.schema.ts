@@ -47,7 +47,7 @@ const CustomerDetailsSchema: Schema = new mongoose.Schema<TCustomerDetails>({
 
 // orderId is the cart id
 export const OrderSchema: Schema = new mongoose.Schema<TOrder>({
-    orderId: {
+    cartId: {
         type: Schema.Types.ObjectId,
         required: true,
         unique: true,

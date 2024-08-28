@@ -45,10 +45,21 @@ const getACategoryFromDB = async (id: string) => {
     return result;
 };
 
-const updateACategoryFromDB = async (id: string, payload: Partial<TCategory>) => {
-    const result = await CategoryModel.findOneAndUpdate({ _id: id }, payload, {
+const updateACategoryFromDB = async (id: string, file, payload) => {
+    // create a category object
+    const category: Partial<TCategory> = { ...payload };
+
+    if (file && file.path) {
+        const imgName = `${Math.random().toString()}categoryImg`;
+        const path = file.path;
+        const categoryImgUrl = await saveImageToCloudinary(imgName, path);
+        // add the image URL link into the category object
+        category.image = categoryImgUrl?.secure_url;
+    }
+
+    const result = await CategoryModel.findOneAndUpdate({ _id: id }, category, {
         new: true,
-        runValidation: true
+        runValidators: true,
     });
     return result;
 };

@@ -49,9 +49,9 @@ const getASingleCategory: RequestHandler = tryCatchAsync(async (req: Request, re
 
 const updateACategory: RequestHandler = tryCatchAsync(async (req: Request, res: Response) => {
     const { categoryId } = req.params;
-    const payload = req.body;
 
-    const result = await CategoryService.updateACategoryFromDB(categoryId, payload);
+    console.log(req)
+    const result = await CategoryService.updateACategoryFromDB(categoryId, req.file, req.body);
 
     sendResponse(res, {
         statusCode: httpStatus.OK,

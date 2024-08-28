@@ -18,7 +18,7 @@ export interface TCustomerDetails {
 
 
 export interface TOrder {
-    orderId: Types.ObjectId;
+    cartId: Types.ObjectId;
     customerDetails: TCustomerDetails;
     paymentMethod: TPaymentMethods;
     paymentStatus: TPaymentStatus;

@@ -18,7 +18,7 @@ const createOrderIntoDB = async (payload: TOrder) => {
 };
 
 const getAllOrderFromDB = async () => {
-    const result = await OrderModel.find().populate("orderId");
+    const result = await OrderModel.find().populate("cartId");
     return result;
 };
 

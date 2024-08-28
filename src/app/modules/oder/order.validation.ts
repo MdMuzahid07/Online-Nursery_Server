@@ -24,7 +24,7 @@ const OrderStatusValidationSchema = z.enum(["Pending", "Processing", "Completed"
 
 
 const OrderValidationSchema = z.object({
-    orderId: z.string(),
+    cartId: z.string(),
     customerDetails: CustomerDetailsValidationSchema,
     paymentMethod: PaymentMethodsValidationSchema,
     paymentStatus: PaymentStatusValidationSchema,
