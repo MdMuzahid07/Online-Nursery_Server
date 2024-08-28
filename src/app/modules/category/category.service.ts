@@ -50,7 +50,7 @@ const updateACategoryFromDB = async (id: string, file, payload) => {
     const category: Partial<TCategory> = { ...payload };
 
     if (file && file.path) {
-        const imgName = `${Math.random().toString()}categoryImg`;
+        const imgName = file.originalname;
         const path = file.path;
         const categoryImgUrl = await saveImageToCloudinary(imgName, path);
         // add the image URL link into the category object
