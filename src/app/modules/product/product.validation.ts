@@ -1,57 +1,52 @@
 import { z } from "zod";
+import { Types } from "mongoose";
 
 const productValidationSchema = z.object({
     title: z.string({
-        invalid_type_error: "product name/title should be string",
-        required_error: "product name/title must be added",
+        invalid_type_error: "Product name/title should be a string",
+        required_error: "Product name/title must be added",
     }),
     description: z.string({
-        invalid_type_error: "product description should be string",
-        required_error: "product description must be added",
+        invalid_type_error: "Product description should be a string",
+        required_error: "Product description must be added",
     }),
     price: z.number({
-        invalid_type_error: "product price should be number",
-        required_error: "product price must be added",
+        invalid_type_error: "Product price should be a number",
+        required_error: "Product price must be added",
     }),
     quantity: z.number({
-        invalid_type_error: "product quantity should be number",
-        required_error: "product quantity must be added",
+        invalid_type_error: "Product quantity should be a number",
+        required_error: "Product quantity must be added",
     }),
-    rating: z.number({
-        invalid_type_error: "product rating should be number",
-        required_error: "product rating must be added",
-    }),
+    reviews: z.array(z.string()).optional(),
     stock: z.number({
-        invalid_type_error: "product stock should be number",
-        required_error: "product stock must be added",
+        invalid_type_error: "Product stock should be a number",
+        required_error: "Product stock must be added",
     }),
     category: z.string({
-        invalid_type_error: "product category should be string",
-        required_error: "product category must be added",
+        message: "Product category should be a valid ObjectId",
     }),
 });
 
 const updateProductValidationSchema = z.object({
     title: z.string({
-        invalid_type_error: "product name/title should be string",
+        invalid_type_error: "Product name/title should be a string",
     }).optional(),
     description: z.string({
-        invalid_type_error: "product description should be string",
+        invalid_type_error: "Product description should be a string",
     }).optional(),
     price: z.number({
-        invalid_type_error: "product price should be number",
+        invalid_type_error: "Product price should be a number",
     }).optional(),
     quantity: z.number({
-        invalid_type_error: "product quantity should be number",
+        invalid_type_error: "Product quantity should be a number",
     }).optional(),
-    rating: z.number({
-        invalid_type_error: "product rating should be number",
-    }).optional(),
+    reviews: z.array(z.instanceof(Types.ObjectId)).optional(),
     stock: z.number({
-        invalid_type_error: "product stock should be number",
+        invalid_type_error: "Product stock should be a number",
     }).optional(),
     category: z.string({
-        invalid_type_error: "product category should be string",
+        message: "Product category should be a valid ObjectId",
     }).optional(),
 });
 

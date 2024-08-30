@@ -6,6 +6,7 @@ export const ProductSchema = new mongoose.Schema<TProduct>(
     {
         title: {
             type: String,
+            unique: true,
             required: true
         },
         description: {
@@ -24,10 +25,11 @@ export const ProductSchema = new mongoose.Schema<TProduct>(
             type: Number,
             required: true
         },
-        rating: {
-            type: Number,
-            required: true
-        },
+        rating: [{
+            type: Schema.Types.ObjectId,
+            ref: "review",
+            default: []
+        }],
         imageUrl: {
             type: String,
             default: " "
@@ -35,7 +37,6 @@ export const ProductSchema = new mongoose.Schema<TProduct>(
         category: {
             type: Schema.Types.ObjectId,
             required: true,
-            unique: true,
             ref: "category"
         }
     },

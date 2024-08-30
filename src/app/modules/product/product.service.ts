@@ -17,15 +17,19 @@ const addProductIntoDB = async (file: any, payload: TProduct) => {
     const products = await ProductModel.find();
 
     // checking is exists
-    const isExists = products?.find((product) => product.title === payload?.title && product?.category === payload?.category);
+    const isExists = products?.find((product) => product.title === payload?.title);
 
     if (isExists) {
         throw new Error("this product already added");
     }
 
     if (file && payload) {
-        const imgName = `${product.title}${product.category}`;
         const path = file?.path;
+
+        const baseName = file.originalname.replace(/\s/g, '-');
+        const uniqueSuffix = Date.now();
+        const imgName = `${baseName}-${uniqueSuffix}-image`;
+
         const productImgUrl = await saveImageToCloudinary(imgName, path);
 
         // adding the image url link into the product object;
@@ -124,7 +128,7 @@ const getProductsFromDB = async (query: Record<string, unknown>) => {
 
 
     // last phase for resolving after all method chaining
-    const result = await paginateQuery.limit(limit).populate("category");
+    const result = await paginateQuery.limit(limit).populate("category").populate(["rating"]);
 
     //! limit, pagination ======> end here <=======
 
@@ -138,10 +142,9 @@ const getProductsFromDB = async (query: Record<string, unknown>) => {
 
 
 const getAProductFromDB = async (id: string) => {
-    const result = await ProductModel.findById({ _id: id });
+    const result = await ProductModel.findById({ _id: id }).populate("rating");
     return result;
 };
-
 
 
 
@@ -154,8 +157,12 @@ const updateAProductFromDB = async (id: string, file: any, payload: Partial<TPro
     const product: Partial<TProduct> = { ...payload };
 
     if (file && file.path) {
-        const imgName = file.originalname;
         const path = file.path;
+
+        const baseName = file.originalname.replace(/\s/g, '-');
+        const uniqueSuffix = Date.now();
+        const imgName = `${baseName}-${uniqueSuffix}-image`;
+
         const productImgUrl = await saveImageToCloudinary(imgName, path);
         // add the image URL link into the product object
         product.imageUrl = productImgUrl?.secure_url;

@@ -20,8 +20,12 @@ const addCategoryIntoDB = async (file: any, payload: TCategory) => {
     };
 
     if (file && payload) {
-        const imgName = `${category.name}${Math.random()}categoryImg`;
         const path = file?.path;
+
+        const baseName = file.originalname.replace(/\s/g, '-');
+        const uniqueSuffix = Date.now();
+        const imgName = `${baseName}-${uniqueSuffix}-image`;
+
         const categoryImgUrl = await saveImageToCloudinary(imgName, path);
         // adding the image url link into the category object;
         category.image = categoryImgUrl?.secure_url;
@@ -45,13 +49,19 @@ const getACategoryFromDB = async (id: string) => {
     return result;
 };
 
-const updateACategoryFromDB = async (id: string, file, payload) => {
+const updateACategoryFromDB = async (id: string, file: any, payload: any) => {
     // create a category object
     const category: Partial<TCategory> = { ...payload };
 
     if (file && file.path) {
-        const imgName = file.originalname;
         const path = file.path;
+        // replacing special characters with -
+        const baseName = file.originalname.replace(/\s/g, '-');
+        const uniqueSuffix = Math.random() * 10;
+
+        const imgName = `${baseName}-${uniqueSuffix}-image`;
+
+
         const categoryImgUrl = await saveImageToCloudinary(imgName, path);
         // add the image URL link into the category object
         category.image = categoryImgUrl?.secure_url;

@@ -6,7 +6,7 @@ export interface TProduct {
     description: string;
     price: number;
     quantity: number;
-    rating: number;
+    rating?: Types.ObjectId[];
     imageUrl: string;
     stock: number;
     category?: Types.ObjectId;
