@@ -112,7 +112,7 @@ const getProductsFromDB = async (query: Record<string, unknown>) => {
     //! limit, pagination ======> start here <=======
 
     let page = 1;
-    let limit = 5;
+    let limit = 30;
     let skip = 0;
 
     if (query?.limit) {
