@@ -1,4 +1,4 @@
-# welcome to my project repository
+## Flora Essence
 
 # Project Name
 Flora Essence
