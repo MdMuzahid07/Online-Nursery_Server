@@ -1,5 +1,3 @@
-## Flora Essence
-
 # Project Name
 Flora Essence
 
@@ -77,10 +75,8 @@ This project is an online nursery website developed using React, Redux, Node.js,
 
 ## Dependencies
 
-- **bcrypt**: For hashing passwords.
 - **cloudinary**: For cloud-based media management.
 - **cors**: For handling cross-origin requests.
-- **dotenv**: For environment variable management.
 - **express**: Web framework for Node.js.
 - **http-status**: For HTTP status codes.
 - **mongoose**: MongoDB object modeling tool.
