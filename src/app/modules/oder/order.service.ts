@@ -1,20 +1,57 @@
+import mongoose from "mongoose";
+import CartModel from "../cart/cart.model";
 import { TOrder } from "./order.interface";
 import OrderModel from "./order.model";
+import ProductModel from "../product/product.model";
 
 const createOrderIntoDB = async (payload: TOrder) => {
+    const cartProducts = await CartModel.findById(payload?.cartId).populate("items");
 
-    // get all Order available in DB
-    // const OrderItems = await OrderModel.find();
+    if (!cartProducts) {
+        throw new Error("Cart not found");
+    }
 
-    // checking is exists
-    // const isExists = OrderItems?.find((Order) => Order.name === payload?.name);
+    const session = await mongoose.startSession();
+    session.startTransaction();
 
-    // if (isExists) {
-    //     throw new Error("this Order already added");
-    // }
+    try {
 
-    const result = await OrderModel.create(payload);
-    return result;
+        for (const items of cartProducts.items) {
+            const product = await ProductModel.findById(items?.productId).session(session);
+
+            // if product not found
+            if (!product) {
+                throw new Error(` ${items?.productId} product not found`);
+            }
+
+            // checking product stock available with ordered quantity
+            if (product.stock < items?.quantity) {
+                throw new Error(` ${items?.quantity} product stock currently not available`);
+            }
+
+            // update the product quantity be decreasing after order
+            await ProductModel.findOneAndUpdate(
+                { _id: items.productId },
+                //  $inc will decrease the quantity because of - value
+                { $inc: { stock: -items.quantity } },
+                { session }
+            );
+        };
+
+
+        const result = await OrderModel.create([payload], { session });
+
+        await session.commitTransaction();
+        session.endSession();
+
+
+        return result;
+
+    } catch (error) {
+        await session.abortTransaction();
+        session.endSession();
+        throw new Error("Order creation failed");
+    }
 };
 
 const getAllOrderFromDB = async () => {
