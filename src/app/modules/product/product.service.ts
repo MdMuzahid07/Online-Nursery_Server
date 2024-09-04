@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { saveImageToCloudinary } from "../../utils/saveImageToCloudinary";
+// import { saveImageToCloudinary } from "../../utils/saveImageToCloudinary";
 import CategoryModel from "../category/category.model";
 import { TProduct } from "./product.interface";
 import ProductModel from "./product.model";
@@ -8,10 +8,10 @@ import ProductModel from "./product.model";
 
 
 
-const addProductIntoDB = async (file: any, payload: TProduct) => {
+const addProductIntoDB = async (payload: TProduct) => {
 
     // create an product object
-    const product: Partial<TProduct> = { ...payload };
+    // const product: Partial<TProduct> = { ...payload };
 
     // get all products available in DB
     const products = await ProductModel.find();
@@ -23,20 +23,20 @@ const addProductIntoDB = async (file: any, payload: TProduct) => {
         throw new Error("this product already added");
     }
 
-    if (file && payload) {
-        const path = file?.path;
+    // if (file && payload) {
+    //     const path = file?.path;
 
-        const baseName = file.originalname.replace(/\s/g, '-');
-        const uniqueSuffix = Date.now();
-        const imgName = `${baseName}-${uniqueSuffix}-image`;
+    //     const baseName = file.originalname.replace(/\s/g, '-');
+    //     const uniqueSuffix = Date.now();
+    //     const imgName = `${baseName}-${uniqueSuffix}-image`;
 
-        const productImgUrl = await saveImageToCloudinary(imgName, path);
+    //     const productImgUrl = await saveImageToCloudinary(imgName, path);
 
-        // adding the image url link into the product object;
-        product.imageUrl = productImgUrl?.secure_url;
-    }
+    //     // adding the image url link into the product object;
+    //     product.imageUrl = productImgUrl?.secure_url;
+    // }
 
-    const result = await ProductModel.create(product);
+    const result = await ProductModel.create(payload);
     return result;
 };
 
@@ -154,21 +154,21 @@ const getAProductFromDB = async (id: string) => {
 const updateAProductFromDB = async (id: string, file: any, payload: Partial<TProduct>) => {
 
     // create a product object
-    const product: Partial<TProduct> = { ...payload };
+    // const product: Partial<TProduct> = { ...payload };
 
-    if (file && file.path) {
-        const path = file.path;
+    // if (file && file.path) {
+    //     const path = file.path;
 
-        const baseName = file.originalname.replace(/\s/g, '-');
-        const uniqueSuffix = Date.now();
-        const imgName = `${baseName}-${uniqueSuffix}-image`;
+    //     const baseName = file.originalname.replace(/\s/g, '-');
+    //     const uniqueSuffix = Date.now();
+    //     const imgName = `${baseName}-${uniqueSuffix}-image`;
 
-        const productImgUrl = await saveImageToCloudinary(imgName, path);
-        // add the image URL link into the product object
-        product.imageUrl = productImgUrl?.secure_url;
-    }
+    //     const productImgUrl = await saveImageToCloudinary(imgName, path);
+    //     // add the image URL link into the product object
+    //     product.imageUrl = productImgUrl?.secure_url;
+    // }
 
-    const result = await ProductModel.findOneAndUpdate({ _id: id }, product, {
+    const result = await ProductModel.findOneAndUpdate({ _id: id }, payload, {
         new: true,
         runValidators: true,
     });
