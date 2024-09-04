@@ -6,6 +6,7 @@ const categoryValidationSchema = z.object({
 
 const updateCategoryValidationSchema = z.object({
     name: z.string().optional(),
+    image: z.string().optional()
 });
 
 export const categoryValidation = {

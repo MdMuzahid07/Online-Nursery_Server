@@ -9,7 +9,6 @@ export const CategorySchema = new mongoose.Schema({
     },
     image: {
         type: String,
-        default: " ",
         required: true
     }
 });
