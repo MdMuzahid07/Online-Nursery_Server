@@ -1,5 +1,5 @@
 # Project Name
-Flora Essence
+Flora Essence 
 
 ## Description
 This project is an online nursery website developed using React, Redux, Node.js, Express.js, MongoDB, Mongoose(ODM). The platform allows users to browse, filter, search for products, manage their shopping cart, and make online payments. It also includes a product and category management section for administrators to perform CRUD operations.
